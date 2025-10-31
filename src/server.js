@@ -1,25 +1,18 @@
 const express = require("express");
 const path = require("path");
-// import express from "express";
+const configViewEngine = require("./config/viewEngine");
+require("dotenv").config();
+const webRoutes = require("./routes/web");
+
 const app = express();
-const port = 8081;
+const port = process.env.PORT || 8888;
+const hostname = process.env.HOST_NAME;
 
 // config engine ejs
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+configViewEngine(app);
 
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-});
+app.use("/", webRoutes);
 
-app.get("/abc", (req, res) => {
-    res.send("ABC");
-});
-
-app.get("/hoidanit", (req, res) => {
-    res.render("sample.ejs");
-});
-
-app.listen(port, () => {
+app.listen(port, hostname, () => {
     console.log(`Example app listening on port ${port}`);
 });
